@@ -23,13 +23,44 @@ E = -½ ΣᵢΣⱼ Wᵢⱼ · sᵢ · sⱼ
 sᵢ = sign(Σⱼ Wᵢⱼ · sⱼ)
 ```
 
+## Stored Pattern
+
+```
+pattern = [+1, +1, +1, -1, -1, -1, +1, +1, -1, -1]
+```
+
 ## Experiments
 
-| Experiment | Flipped Bits | Initial Accuracy | Final Accuracy | Energy Change |
-|------------|--------------|------------------|----------------|---------------|
-| Q6 (3 bits) | 0, 3, 7 | 7/10 | 10/10 ✓ | -3 → -45 |
-| Q7 (4 bits) | 0, 3, 5, 7 | 6/10 | 10/10 ✓ | +3 → -45 |
-| Q8 (all bits) | 0-9 | 0/10 | 0/10 | -45 → -45 |
+| Experiment | Flipped Bits | Initial Accuracy | Final Accuracy | Energy Change | Result |
+|------------|--------------|------------------|----------------|---------------|--------|
+| Q6 (3 bits) | 0, 3, 7 | 7/10 | 10/10 | -3 → -45 | ✓ Recovered |
+| Q7 (4 bits) | 0, 3, 5, 7 | 6/10 | 10/10 | +3 → -45 | ✓ Recovered |
+| Q8 (all bits) | 0-9 | 0/10 | 0/10 | -45 → -45 | ✗ Spurious State |
+
+## Experiment Details
+
+### Q6: 3 Noisy Bits
+- Flipped bits: 0, 3, 7
+- Network successfully recovers the original pattern
+- Energy decreases in 3 steps (one for each corrupted bit)
+
+### Q7: 4 Noisy Bits  
+- Flipped bits: 0, 3, 5, 7
+- Network still recovers the original pattern
+- Higher initial energy due to more corruption
+
+### Q8: All Bits Flipped (Spurious Attractor)
+- All 10 bits flipped → creates inverted pattern
+- **No recovery!** Network stays in inverted state
+- Energy remains constant at -45 (already at minimum)
+- Demonstrates that inverted pattern (-p) is also a stable attractor
+
+## Key Findings
+
+1. **Energy Always Decreases**: Network never increases energy during updates
+2. **Robust Recovery**: Successfully recovers patterns with up to 40% noise
+3. **Spurious States**: Inverted pattern is a stable attractor with same energy as original
+4. **Limitation**: Hopfield network cannot distinguish between p and -p
 
 ## Project Structure
 
@@ -54,12 +85,6 @@ matplotlib
 ## Usage
 
 Open any `.ipynb` file in Jupyter Notebook or Google Colab and run all cells.
-
-## Key Findings
-
-1. **Energy Always Decreases**: Network never increases energy during updates
-2. **Robust Recovery**: Successfully recovers patterns with up to 40% noise
-3. **Spurious States**: Inverted patterns are stable attractors (Q8 demonstrates this)
 
 ## Course Info
 
